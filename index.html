@@ -1,29 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>logivi.com</title>
-  <style>
-    :root { color-scheme: light dark; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-    }
-    main { text-align: center; padding: 2rem; }
-    h1 { font-size: clamp(2rem, 6vw, 4rem); margin: 0 0 0.5rem; }
-    p { opacity: 0.7; margin: 0; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Loris Giulivi</title>
+    <style>
+		.section-breaker {
+			width: 100%;
+			max-width: 800px;
+			align: center:
+			padding: auto;
+			/*margin: 40px 0;*/
+			border: none;
+			border-top: 1px solid #00695C;
+		}
+		.section-breaker h3 {
+			text-align: center;
+			font-size: 1.5em;
+			margin: 20px 0;
+		}
+		emph {
+			font-weight: 700;
+			color: #00695C
+		}
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
+            color: #333;
+        }
+        header {
+            text-align: center;
+            padding: 50px 0;
+            position: relative;
+        }
+        header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			cursor: pointer;
+        }
+		.falling-char {
+			position: absolute;
+			font-size: 20px;
+			color: green;
+			animation: fall 3s linear infinite;
+			user-select: none;
+		}
+
+		@keyframes fall {
+			0% {
+				top: 0;
+				opacity: 1;
+			}
+			100% {
+				top: 100vh;
+				opacity: 0;
+			}
+		}
+        header .line {
+            width: 90%;
+            height: 2px;
+            background: #333;
+            margin-top: 40px;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 0px;
+            position: relative;
+        }
+        header .line::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            width: 200px;
+            height: 100px;
+            background: transparent;
+            border-bottom: 2px solid #333;
+            border-radius: 0 0 100px 100px;
+            transform: translate(-50%,-45%);
+        }
+		.title-section {
+			text-align: center;
+			padding: 0px 0px;
+		}
+		.title {
+			font-size: 3.5em;
+			font-weight: 700;
+			color: #333;
+			margin-bottom: 5px;
+			line-height: 1;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.subtitle {
+			font-size: 2em;
+			font-weight: 300;
+			color: #555;
+		}
+        .bio {
+			hyphens: auto;
+            text-align: justify;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+		.bio p {
+			font-size: 1.2em;
+			line-height: 1.6;
+		}
+		.bio p .hello {
+			font-size: 3em;
+			font-weight: 700;
+			color: #004D40;
+			line-height: 1;
+		}
+		.about-me {
+			text-align: left;
+			hyphens: auto;
+            text-align: justify;
+			padding: 20px;
+			max-width: 800px;
+			margin: 0 auto;
+		}
+
+		.about-me h2 {
+			font-size: 2.5em;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.about-me p {
+			font-size: 1.2em;
+			line-height: 1.6;
+			color: #555;
+		}
+		.projects-section {
+			position: relative;
+			/*display: flex;*/
+			align-items: center;
+			justify-content: center; 
+			padding: auto;
+			max-width: 800px;
+			margin: auto; /*calc(50% - 400px - 102px);*/
+			padding-top: 50px;
+			padding-bottom: 50px;
+			gap: 0px;
+		}
+
+		.projects-title {
+			position: absolute;
+			writing-mode: vertical-rl;
+			transform: translateY(-50%) rotate(180deg);
+			top: 50%;
+			left: -30px; /* Adjust this value to your preference */
+			font-size: 2em;
+			font-weight: 700;
+			line-height: 1;
+			margin-right: 10px;
+			white-space: nowrap;
+			display: inline-block;
+			color: #333;
+			color: rgba(33, 33, 33, 0.7);
+		}
+
+		.projects {
+			position: relative;
+			flex: 1;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			padding: 0px;
+			padding-left: 25px;
+		}
+        .card {
+			user-select: none;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            width: 190px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card h3 {
+            margin: 0 0 10px;
+        }
+        .popup {
+			hyphens: auto;
+			text-align: justify;
+			display: none;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: white;
+			padding: 30px;
+			padding-top: 10px;
+			border-radius: 10px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+			z-index: 1000;
+			max-width: 800px;
+			width: 90%; /* Adjust this value to fit smaller screens if needed */
+			max-height: 90vh; /* Ensure the popup doesn't exceed 90% of the viewport height */
+			overflow-y: auto; /* Make the popup content scrollable if it exceeds the max-height */
+		}
+
+		.popup-header {
+			vertical-align: top;
+			display: inline;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0px 0px;
+			width: 100%;
+			padding: auto;
+		}
+
+		.popup-title {
+			width: calc(100% - 68px);
+			padding: auto;
+			margin-left: 20px;
+			padding-bottom: 25px;
+			display: inline-block;
+			margin: 0;
+			font-size: 1.25em;
+			text-align: justify;
+			hyphens: auto;
+			-webkit-hyphens: auto;
+			-ms-hyphens: auto;
+			overflow-wrap: break-word;
+			word-break: break-word;
+			max-width: calc(100% - 40px); /* Adjust based on the button size */
+		}
+		
+		.no-scroll {
+			overflow: hidden;
+		}
+
+		.close-button {
+			vertical-align: top;
+			background: none;
+			border: none;
+			font-size: 1.5em;
+			cursor: pointer;
+			color: #333;
+			line-height: 1;
+			padding: 5px;
+		}
+
+		.close-button:hover {
+			color: #000;
+		}
+
+		.close-button:focus {
+			outline: none;
+		}
+		
+        .popup h3 {
+            margin-top: 0;
+            padding-top: 15px;
+            padding-right: 20px;
+			hyphens: auto;
+            text-align: justify;
+        }
+		.popup-button-container {
+			display: flex;
+			justify-content: flex-end; /* Align button to the right */
+			align-items: center;
+			padding-bottom: 10px;
+		}
+		.popup-button-container pupup-title {
+			font-weight: 700;
+            margin-top: 0;
+            padding-top: 15px;
+            padding-right: 20px;
+			hyphens: auto;
+            text-align: justify;
+			flex-grow: 1;
+		}
+        .popup button {
+			align: center;
+			background-color: #007BFF; /* Primary color */
+			color: #fff; /* Text color */
+			border: none;
+			border-radius: 50px; /* Rounded edges */
+			padding: 5px 10px; /* Padding for the button */
+			font-size: 16px; /* Font size */
+			font-weight: 600; /* Font weight */
+			cursor: pointer;
+			transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.popup img {
+			object-fit: contain;
+			width:100%;
+			max-height: 400px;
+		}
+
+		.popup button:hover {
+			background-color: #0056b3; /* Darker shade for hover */
+			transform: translateY(-2px); /* Slight lift effect */
+			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for hover */
+		}
+
+		.popup button:active {
+			background-color: #004085; /* Even darker shade for active state */
+			transform: translateY(0); /* Reset lift effect */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for active state */
+		}
+
+		.popup button:focus {
+			outline: none;
+			box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Focus ring */
+		}
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+		.awards-section {
+			text-align: center;
+			padding: 20px;
+			max-width: 800px;
+			margin: auto;
+		}
+		.awards-section h2 {
+			font-size: 2em;
+			margin-bottom: 20px;
+			color: #333;
+		}
+		.awards-list {
+			list-style-type: none;
+			padding: 0;
+			text-align: left;
+			display: inline-block;
+		}
+		.awards-list li {
+			font-size: 1.2em;
+			margin-bottom: 10px;
+			padding-left: 30px; /* Add padding to align text */
+			text-indent: -0px; /* Negative text-indent to pull the first line back */
+			position: relative;
+			hyphens: auto;
+            text-align: justify;
+		}
+		.awards-list li .medal {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.social-media {
+			text-align: center;
+			padding: 20px;
+		}
+		.social-media h2 {
+			margin-bottom: 20px;
+		}
+		.social-grid {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 20px;
+		}
+		.social-button {
+			width: 50px;
+			height: 50px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 50%;
+			background-color: white;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			transition: transform 0.2s;
+		}
+		.social-button img {
+			width: 30px;
+			height: 30px;
+		}
+		.social-button:hover {
+			transform: scale(1.1);
+		}
+        .info {
+            text-align: center;
+            padding: 20px;
+        }
+		.contact-info {
+			user-select: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+		.contact-info span {
+			margin: 0 0px;
+		}
+		.info img {
+			vertical-align: middle;
+		}
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #004d40;
+            color: white;
+        }
+		
+		/* SCROLLBAR */
+		/* width */
+		::-webkit-scrollbar {
+		  width: 10px;
+		}
+
+		/* Track */
+		::-webkit-scrollbar-track {
+		  background: #f1f1f1;
+		}
+
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		  background: #00695C;
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		  background: #009688;
+		}
+		
+		#connectButton {
+			position: fixed;
+			bottom: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			padding: 20px 30px;
+			font-size: 16px;
+			color: white;
+			background-color: #007BFF;
+			border: none;
+			border-radius: 20px;
+			cursor: pointer;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+			z-index: 1000;
+		}
+
+		#connectButton:hover {
+			background-color: #0056b3;
+		}
+    </style>
 </head>
 <body>
-  <main>
-    <h1>logivi.com</h1>
-    <p>Coming soon.</p>
-  </main>
+	<!-- <button id="connectButton">Connect</button> !-->
+    <header>
+        <img id="profile-photo" src="https://logivi.com/images/Portrait_square_1MB.png" alt="Portrait">
+        <div class="line"></div>
+    </header>
+    <section class="title-section">
+		<h1 class="title">Loris Giulivi</h1>
+		<h2 class="subtitle">Computer Scientist & Engineer</h2>
+	</section>
+	<section class="social-media">
+		<!-- <h2>Connect with me</h2>!-->
+		<div class="social-grid">
+			<a href="https://www.linkedin.com/in/lorisgiulivi/" class="social-button" target="_blank">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
+			</a>
+			<a href="https://x.com/GiuliviLoris" class="social-button" target="_blank">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Twitter_new_X_logo.png" alt="Twitter">
+			</a>
+			<a href="https://github.com/loris2222" class="social-button" target="_blank">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+			</a>
+		</div>
+	</section>
+    <section class="bio">
+		<p><span class="hello">HELLO!</span> I'm Loris, a passionate engineer, researcher, and developer. I work in the fields of Computer Vision and Deep Learning. I have published research on the topics of explainable AI, adversarial ML, multi-modal LLMs, and biomedical imaging. Welcome to my portfolio, where you can explore my activities and publications.</p>
+	</section>
+	<section class="about-me">
+        <h2>About Me</h2>
+        <p>I am a Ph.D. student at Politecnico di Milano, where I obtained my M.Sc. summa cum laude in Dec. 2020. Before my Ph.D., I have also spent one year as research assistant. During these years in academia, I have been doing research in Computer Vision, specifically Explainable Artificial Intelligence and Adversarial Machine Learning, taking the role of principal investigator in a variety of foundational and applied research projects. I have also been active as a teaching assistant for computer science and deep learning courses at my university. </p>
+        <p><emph>I am a thinkerer by passion</emph> (typo intended), and I have always wanted to disassemble things and learn how they work. Apart from angering the family, a positive outcome of this is that my expertises are not limited to my research topic. Indeed, I am familiar with numerous development frameworks, ranging from data science, to IoT, and to content creation.</p>
+    </section>
+	<hr class="section-breaker">
+	<section class="projects-section">
+		<div class="projects-title">
+			<p>Publications</p>
+		</div>
+		<div class="projects">
+			<div class="card" onclick="openPopup('scratches')">
+				<h3>Adversarial Scratches</h3>
+				<p>Pattern Recognition, 2023</p>
+			</div>
+			<div class="card" onclick="openPopup('pv')">
+				<h3>Perception Visualization</h3>
+				<p>BMVC, 2022</p>
+			</div>
+			<div class="card" onclick="openPopup('convis')">
+				<h3>Concept Visualization</h3>
+				<p>IJCNN, 2024</p>
+			</div>
+			<div class="card" onclick="openPopup('cells')">
+				<h3>Expert-driven Cell Generation</h3>
+				<p>ISBI, 2024</p>
+			</div>
+			<div class="card" onclick="openPopup('se3d')">
+				<h3>SE3D</h3>
+				<p>ICIP, 2024</p>
+			</div>
+			<div class="card" onclick="openPopup('mllms')">
+				<h3>Explaining MLLMs</h3>
+				<p>Arxiv, 2024</p>
+			</div>
+			<!-- Add more cards as needed -->
+		</div>
+	</section>
+	<section class="projects-section">
+		<div class="projects-title">
+			<p>Industry</p>
+		</div>
+		<div class="projects">
+			<div class="card" onclick="openPopup('gil')">
+				<h3>Metal Defect Detection</h3>
+				<p>Gilardoni S.p.A.</p>
+			</div>
+			<div class="card" onclick="openPopup('danieli')">
+				<h3>Metalworks Plant Disaster Prevention</h3>
+				<p>Danieli S.p.A.</p>
+			</div>
+			<div class="card" onclick="openPopup('capable')">
+				<h3>Adversarial Knitwear</h3>
+				<p>Capable.Design</p>
+			</div>
+			<div class="card" onclick="openPopup('ikonisys')">
+				<h3>Cancerous Cell Detection</h3>
+				<p>Ikonisys Inc.</p>
+			</div>
+			<div class="card" onclick="openPopup('shelf')">
+				<h3>3D Template Matching</h3>
+				<p>vision@polimi</p>
+			</div>
+			<div class="card" onclick="openPopup('sarca')">
+				<h3>Automatic Parts Measuring</h3>
+				<p>Meccanica del Sarca S.p.A.</p>
+			</div>
+			<!-- Add more cards as needed -->
+		</div>
+	</section>
+    <div id="scratches" class="popup">
+		<div class="popup-header">
+			<h1 class="popup-title">Adversarial Scratches: Deployable Attacks to CNN Classifiers</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+		<img src="https://logivi.com/images/scratches.png" alt="Adversarial Scratches">
+		<p>
+			Deep Neural Networks (DNNs) are susceptible to adversarial examples. These take the form of small perturbations applied to the model’s input which lead to incorrect predictions.
+			Most of the literature, however, focuses on attacks to <i>digital images</i>, which are by design not deployable to physical targets.
+			Consequently, it is hard to assess how dangerous these attacks are to real world systems such as autonomous vehicles.
+			In this work, we present Adversarial Scratches, a novel attack which is designed to be deployable to physical targets. We leverage Bézier curves to reduce the dimension of the search space and to constraint the attack to a specific location.
+			We test the proposed attack in several scenarios, and show that Adversarial Scratches achieve  higher fooling rate than other deployable state-of-the-art methods, while requiring significantly fewer queries and modifying very few pixels.
+		</p>
+        <p><a href="https://arxiv.org/pdf/2204.09397" target="_blank">Paper</a></p>
+    </div>
+    <div id="pv" class="popup">
+		<div class="popup-header">
+			<h1 class="popup-title">Perception Visualization: Seeing Through the Eyes of a DNN</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/pv.png" alt="Perception Visualization">
+		<p>
+			Current research in the field of explainable AI has given rise to various perturbation or gradient-based saliency maps. For images, these techniques fail to fully capture and convey the semantic information needed to elucidate why the model makes the predictions it does. In this work, we develop a new form of explanation that is radically different in nature from current explanation methods, such as Grad-CAM. Perception visualization provides a visual representation of what the DNN perceives in the input image by depicting what visual patterns the latent representation corresponds to. Visualizations are obtained through a reconstruction model that inverts the encoded features, such that the parameters and predictions of the original models are not modified. Results of our user study demonstrate that humans can better understand and predict the system’s decisions when perception visualizations are available, thus easing the debugging and deployment of deep models as trusted systems.
+		</p>
+        <p><a href="https://arxiv.org/pdf/2204.09920" target="_blank">Paper</a></p>
+    </div>
+    <div id="convis" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Concept Visualization: Explaining the CLIP Multi-modal Embedding Using WordNet</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/convis.png" alt="Concept Visualization">
+		<p>
+			CLIP has shown impressive performance on a variety of tasks, yet, its inherently opaque architecture may hinder the application of models employing CLIP as backbone, especially in fields where trust and model explainability are imperative.
+			Previously available explanations such as saliency maps can only be computed to explain classes relevant to the end task, often smaller in scope than the backbone training classes.In the context of models implementing CLIP as their vision backbone, a substantial portion of the information embedded within the learned representations is thus left unexplained.
+			In this work, we propose Concept Visualization (ConVis), a novel saliency methodology that explains the CLIP embedding of an image by exploiting the multi-modal nature of the embeddings. ConVis makes use of lexical information from WordNet to compute task-agnostic Saliency Maps for any concept, not limited to concepts the end model was trained on.
+			We validate our use of WordNet via an out of distribution detection experiment, and test ConVis on an object localization benchmark, showing that Concept Visualizations correctly identify and localize the image's semantic content. Additionally, we perform a user study demonstrating that our methodology can give users insight on the model's functioning.
+		</p>
+        <p><a href="https://arxiv.org/pdf/2405.14563" target="_blank">Paper</a></p>
+    </div>
+    <div id="cells" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">An expert-driven data generation pipeline for histological images</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/cells.png" alt="Cells">
+		<p>
+			Deep Learning models have been successfully applied to many applications including biomedical cell segmentation and classification in histological images. These models require large amounts of annotated data which might not always be available, especially in the medical field where annotations are scarce and expensive. To overcome this limitation, we propose a novel pipeline for generating synthetic datasets for cell segmentation. Given only a handful of annotated images, our method generates a large dataset of images which can be used to effectively train DL instance segmentation models. Our solution is designed to generate cells of realistic shapes and placement by allowing experts to incorporate domain knowledge during the generation of the dataset.
+		</p>
+        <p><a href="https://confcats-event-sessions.s3.amazonaws.com/isbi24/papers/1224.pdf" target="_blank">Paper</a></p>
+    </div>
+    <div id="se3d" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">SE3D: A Framework for Saliency Method Evaluation in 3D Imaging</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/seed.png" alt="SE3D">
+		<p>
+			3D CNNs have shown impressive performance in biomedical imaging. In these critical settings, explaining the model's decisions is fundamental. Despite recent advances in Explainable Artificial Intelligence, however, little effort has been devoted to explaining 3D CNNs, and many works explain these models via inadequate extensions of 2D saliency methods.
+			One fundamental limitation to the development of 3D saliency methods is the lack of a benchmark to quantitatively assess them on 3D data.
+			To address this issue, we propose SE3D: a framework for Saliency method Evaluation in 3D imaging.
+			We propose modifications to ShapeNet, ScanNet, and BraTS datasets, and evaluation metrics to assess saliency methods for 3D CNNs.
+			We evaluate both state-of-the-art saliency methods designed for 3D data and extensions of popular 2D saliency methods to 3D. Our experiments show that 3D saliency methods do not provide explanations of sufficient quality, and that there is margin for future improvements and safer applications of 3D CNNs in critical fields.
+		</p>
+        <p><a href="https://arxiv.org/pdf/2405.14584" target="_blank">Paper</a></p>
+    </div>
+    <div id="mllms" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Explaining Multi-modal Large Language Models by Analyzing their Vision Perception</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/mllm.png" alt="MLLMs">
+		<p>
+			Multi-modal Large Language Models (MLLMs) have demonstrated remarkable capabilities in understanding and generating content across various modalities, such as images and text. However, their interpretability remains a challenge, hindering their adoption in critical applications. This research proposes a novel approach to enhance the interpretability of MLLMs by focusing on the image embedding component. We combine an open-world localization model with a MLLM, thus creating a new architecture able to simultaneously produce text and object localization outputs from the same vision embedding. The proposed architecture greatly promotes interpretability, enabling us to design a novel saliency map to explain any output token, to identify model hallucinations, and to assess model biases through semantic adversarial perturbations.
+		</p>
+        <p><a href="https://arxiv.org/pdf/2405.14612" target="_blank">Paper</a></p>
+    </div>
+	
+    <div id="gil" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Metal defect detection in X-Ray Imaging</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/gil.png" alt="gilardoni">
+		<p>
+			Gilardoni S.p.A. develops X-Ray scanners for industrial applications. We have developed an application to detect and categorize defects in metal components from the output X-Ray image. The application employs Machine Learning techniques to cluster and classify alterations in the metal structure.
+		</p>
+    </div>
+    <div id="danieli" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Steel tube manufacturing plant disaster prevention</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/danieli.png" alt="danieli">
+		<p>
+			Danieli S.p.A. develops and operates steel tube manufacturing plants. In one production stage, a steel tube is automatically inserted into a mold by a mandrel. If the tube's position is incorrect, this can cause a catastrophic failure of the plant, with great economi cost and risk to the operators.
+			We have developed a camera system to analyze in real time the position of the tube with millimeter precision. The system enables to raise an alarm if the tube is not positioned correctly, thus avoiding failures.
+			The system has been validated through a digital twin reconstruction of the plant and camera system.
+		</p>
+    </div>
+    <div id="capable" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Adversarial Knitwear for urban camouflage</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/capable.png" alt="capable">
+		<p>
+			We have developed adversarial patterns in collaboration with Capable.Design that can be knitted on garments to avoid recognition by person identification systems.
+			The patterns are developed to be robust to different views and to be appealing in terms of color and shapes.
+			A patent has been submitted for the developed patterns.
+		</p>
+    </div>
+    <div id="ikonisys" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Histological Image Segmentation</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/ikonisys.png" alt="ikonisys">
+		<p>
+			Ikonisys Inc. develops histological imaging equipment. We have developed a Deep Learning system to segment cells in fluorescence images based on Faster-RCNN and deployed it to Ikonisys' machines.
+		</p>
+    </div>
+    <div id="shelf" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">3D Template Matching</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/template.png" alt="pattern">
+		<p>
+			We have developed a system for 3D template matching able to identify all instances of hundreds of planar templates in an image. The system can identify objects such as boxes, and thus can be employed in supermarkets for shelf analysis.
+		</p>
+    </div>
+    <div id="sarca" class="popup">
+        <div class="popup-header">
+			<h1 class="popup-title">Automatic Component Measurement</h1>
+			<button onclick="closePopup()" class="close-button" aria-label="Close">&times;</button>
+		</div>
+        <img src="https://logivi.com/images/sarca.png" alt="sarca">
+		<p>
+			We have developed a camera and laser system to automatically measure the dimensions of a metal component for quality assurance.
+			A point cloud is obtained from the system, which is then compared to a template to verify compliance with the specifications.
+		</p>
+    </div>
+    <div class="overlay" onclick="closePopup()"></div>
+	<hr class="section-breaker">
+	<section class="awards-section">
+    <h2>Awards</h2>
+		<ul class="awards-list">
+			<li><span class="medal">&#129351;</span> Winner of competition “Give Wings to the Future” Sponsored by Sedici Media and Fly University Project with project “Technology at the Service of Life” and <b>presenter at Expo Dubai 2020</b>.</li>
+			<li><span class="medal">&#129351;</span> International Neural Networks Society Travel Grant to attend IJCNN 2024.</li>
+			<!-- Add more awards as needed -->
+		</ul>
+	</section>
+    <section class="info">
+		<div class="contact-info">
+		  <span style="order: 3">@</span>
+		  <span style="order: 4">hotmail.it</span>
+		  <span style="order: 1">For more information, please contact me at:&nbsp;</span>
+		  <span style="order: 2">loris2222</span>
+		</div>
+	</section>
+    <footer>
+        <p>&copy; 2024 Loris Giulivi. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function openPopup(id) {
+            document.getElementById(id).style.display = 'block';
+            document.querySelector('.overlay').style.display = 'block';
+			document.body.classList.add('no-scroll');
+        }
+        function closePopup() {
+            document.querySelectorAll('.popup').forEach(popup => popup.style.display = 'none');
+            document.querySelector('.overlay').style.display = 'none';
+			document.body.classList.remove('no-scroll');
+        }
+    </script>
+	<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const profilePhoto = document.getElementById('profile-photo');
+            let isEffectActive = false;
+            let intervalId;
+
+            profilePhoto.addEventListener('click', (event) => { // Pass the event object here
+                isEffectActive = !isEffectActive;
+                if (isEffectActive) {
+                    startEffect(event); // Pass the event object here
+                } else {
+                    stopEffect();
+                }
+            });
+
+            function startEffect(event) { // Receive the event object here
+                intervalId = setInterval(() => {
+                    const charElement = document.createElement('div');
+                    charElement.classList.add('falling-char');
+                    charElement.innerText = Math.random() > 0.5 ? '0' : '1';
+                    charElement.style.left = `${event.clientX}px`; // Adjust left position based on cursor
+                    charElement.style.top = `${event.clientY}px`; // Adjust top position based on cursor
+                    document.body.appendChild(charElement);
+
+                    // Remove the element after animation ends
+                    setTimeout(() => {
+                        charElement.remove();
+                    }, 3000);
+                }, 100);
+            }
+
+            function stopEffect() {
+                clearInterval(intervalId);
+                const fallingChars = document.querySelectorAll('.falling-char');
+                fallingChars.forEach(char => char.remove());
+            }
+        });
+    </script>
+	<script>
+		document.getElementById('connectButton').addEventListener('click', function() {
+		document.getElementById('connectButton').style.display = 'none';
+		window.scrollTo({
+			top: document.body.scrollHeight,
+			behavior: 'smooth'
+		});
+	});
+	</script>
 </body>
 </html>
