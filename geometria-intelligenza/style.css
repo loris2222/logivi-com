@@ -1,0 +1,556 @@
+/* ============================================================
+   AI lecture deck — styles
+   Pure CSS, no framework. Designed for a projector: high
+   contrast, large type, generous margins.
+   ============================================================ */
+
+:root {
+  --bg:        #0f1117;
+  --bg-soft:   #161922;
+  --ink:       #f2f4f8;
+  --ink-dim:   #a6adbb;
+  --ink-faint: #6b7385;
+  --rule:      #2a2f3d;
+
+  --alive:     #4ade80;  /* green  — alive axis      */
+  --big:       #60a5fa;  /* blue   — size axis       */
+  --accent:    #fbbf24;  /* amber  — highlight       */
+  --warm:      #fb7185;  /* rose   — warnings/joke   */
+  --region:    #a78bfa;  /* violet — the pet region  */
+
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          system-ui, "Helvetica Neue", Arial, sans-serif;
+  --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* ---- responsive scale ----------------------------------
+     Every font size below is a clamp() against --u, a unit that
+     tracks BOTH viewport dimensions. Using vmin rather than vw
+     means a short-but-wide projector (1024x576, 1280x720) shrinks
+     type instead of overflowing, which is the failure mode that
+     actually bites in a room you have not seen.               */
+  --u: 1vmin;
+  --pad-x: 6vw;
+  --pad-y: 4vh;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- deck shell -------------------------------------- */
+
+#deck { position: relative; width: 100vw; height: 100vh; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--pad-y) var(--pad-x);
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+
+/* Slides whose content should hug the top rather than centre */
+.slide.top { justify-content: flex-start; padding-top: calc(var(--pad-y) * 1.4); }
+
+/* ---------- typography -------------------------------------- */
+
+h1 {
+  font-size: clamp(1.9em, 5.6vmin, 6rem);
+  line-height: 1.04; font-weight: 700;
+  letter-spacing: -0.025em; margin: 0 0 .4em;
+}
+h2 {
+  font-size: clamp(1.35em, 3.9vmin, 4rem);
+  line-height: 1.12; font-weight: 650;
+  letter-spacing: -0.02em; margin: 0 0 .5em;
+}
+h3 {
+  font-size: clamp(.95em, 2.1vmin, 2.1rem);
+  font-weight: 600; margin: 0 0 .5em; color: var(--ink);
+}
+p, li {
+  font-size: clamp(.86em, 1.85vmin, 1.9rem);
+  line-height: 1.5; color: var(--ink-dim); margin: 0 0 .7em;
+  max-width: 34em;
+}
+strong { color: var(--ink); font-weight: 650; }
+em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+.kicker {
+  font-size: clamp(.72em, 1.35vmin, 1.25rem);
+  text-transform: uppercase; letter-spacing: .16em;
+  color: var(--ink-faint); font-weight: 600; margin-bottom: 1.1em;
+}
+.big-statement {
+  font-size: clamp(1.45em, 4.4vmin, 4.6rem);
+  line-height: 1.22; font-weight: 600; letter-spacing: -0.02em;
+  color: var(--ink); max-width: 20em;
+}
+.footnote {
+  font-size: clamp(.75em, 1.4vmin, 1.3rem);
+  color: var(--ink-faint); margin-top: 1.4em; max-width: 44em;
+}
+
+ul { padding-left: 1.1em; margin: 0 0 1em; }
+li { margin-bottom: .45em; }
+li::marker { color: var(--ink-faint); }
+
+/* ---------- layout helpers ---------------------------------- */
+
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4vw; align-items: center; }
+.cols.tight { gap: 2.5vw; }
+.cols.left-narrow { grid-template-columns: 0.85fr 1.15fr; }
+.stack { display: flex; flex-direction: column; gap: .5em; }
+.center { text-align: center; align-items: center; }
+.center p, .center .big-statement { margin-left: auto; margin-right: auto; }
+
+/* ---------- cover ------------------------------------------- */
+
+.cover h1 { font-size: clamp(2.1em, 7.4vmin, 8rem); margin-bottom: .18em; }
+.cover .sub {
+  font-size: clamp(.95em, 2.4vmin, 2.4rem);
+  color: var(--ink-dim); font-weight: 400; max-width: 30em;
+}
+.cover .byline {
+  margin-top: 2.6em; font-size: clamp(.8em, 1.5vmin, 1.5rem);
+  color: var(--ink-faint);
+}
+
+/* ---------- cards ------------------------------------------- */
+
+.card {
+  background: var(--bg-soft); border: 1px solid var(--rule);
+  border-radius: 14px; padding: clamp(.7em, 1.6vmin, 1.1em) clamp(.85em, 1.9vmin, 1.3em);
+}
+.card h3 { margin-bottom: .35em; }
+.card p  { font-size: clamp(.8em, 1.6vmin, 1.45rem); margin: 0; }
+.card-grid { display: grid; gap: clamp(.6em, 1.5vmin, 1em); }
+.card-grid.c3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid.c2 { grid-template-columns: repeat(2, 1fr); }
+
+.card.phase { border-left: 3px solid var(--rule); }
+.card.phase.p1 { border-left-color: var(--big); }
+.card.phase.p2 { border-left-color: var(--alive); }
+.card.phase.p3 { border-left-color: var(--accent); }
+
+.tag {
+  display: inline-block; font-size: clamp(.7em, 1.25vmin, 1.05rem); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .1em;
+  padding: .25em .6em; border-radius: 999px;
+  background: rgba(255,255,255,.06); color: var(--ink-faint);
+  margin-bottom: .6em;
+}
+
+/* model output samples */
+.output {
+  font-family: var(--mono); font-size: clamp(.72em, 1.4vmin, 1.3rem);
+  line-height: 1.5; background: #0a0c12; border: 1px solid var(--rule);
+  border-radius: 8px; padding: .75em .9em; color: var(--ink-dim);
+  white-space: pre-wrap; margin-top: .6em;
+}
+.output .prompt { color: var(--ink-faint); }
+.output .gen    { color: var(--accent); }
+
+/* ---------- chart ------------------------------------------- */
+
+.chart-wrap {
+  position: relative; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.chart { position: relative; }
+/* The chart-layer is the element that persists across slides in a chart
+   group; it is reparented into each slide's .chart host so the SVG (and
+   therefore the object nodes) survive and can animate between states. */
+.chart-layer { position: relative; }
+.chart svg, .chart-layer svg { display: block; overflow: visible; }
+
+.axis-line   { stroke: var(--rule); stroke-width: 2; }
+.axis-arrow  { fill: var(--rule); }
+.axis-label  {
+  font-family: var(--font); font-weight: 650;
+  letter-spacing: .04em; text-transform: uppercase;
+  /* font-size is set per-render in chart.js so it tracks the plane size */
+}
+.axis-label.x { fill: var(--big); }
+.axis-label.y { fill: var(--alive); }
+.axis-label.hidden-label { fill: var(--ink-faint); }
+.axis-end {
+  font-family: var(--font); fill: var(--ink-faint); font-weight: 500;
+}
+.quad-label {
+  font-family: var(--font); fill: var(--ink-faint);
+  font-weight: 500; letter-spacing: .03em;
+}
+.grid-line { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 6; opacity: .5; }
+
+/* plotted objects */
+.obj { cursor: default; }
+.obj circle.ring { fill: none; stroke: rgba(255,255,255,.22); stroke-width: 2; }
+.obj text.name {
+  font-family: var(--font); font-weight: 600;
+  fill: var(--ink); text-anchor: middle;
+}
+/* NOTE: the <g class="obj"> carries its position in the SVG `transform`
+   ATTRIBUTE. A CSS `transform` on the same element replaces that attribute
+   entirely, which would stack every object at the origin. So the entrance
+   animation and the glide are applied to an inner <g class="obj-inner">
+   and to the attribute respectively -- never as a CSS transform on .obj. */
+.obj > .obj-inner { transform-box: fill-box; transform-origin: center; }
+.obj.enter > .obj-inner { animation: pop .42s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes pop {
+  0%   { opacity: 0; transform: scale(.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+/* Animating the SVG transform attribute is safe: it is the same property,
+   so the browser interpolates the translate rather than overriding it. */
+.obj { transition: transform .7s cubic-bezier(.4,0,.2,1), opacity .35s ease; }
+
+/* the big "reveal" portrait shown before placing */
+.reveal-card {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: .8em;
+  z-index: 20; animation: fadeUp .35s ease both;
+}
+.reveal-card img {
+  width: clamp(130px, 30vmin, 460px); height: clamp(130px, 30vmin, 460px);
+  border-radius: 50%; object-fit: cover;
+  box-shadow: 0 24px 70px rgba(0,0,0,.72), 0 0 0 5px var(--bg), 0 0 0 7px var(--rule);
+}
+.reveal-card .label {
+  font-size: clamp(1em, 2.7vmin, 2.8rem); font-weight: 650;
+  color: var(--ink); letter-spacing: -.01em;
+}
+.reveal-card .hint {
+  font-size: clamp(.78em, 1.5vmin, 1.4rem); color: var(--ink-faint);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* pet region overlay */
+.region-box {
+  fill: rgba(167,139,250,.14); stroke: var(--region);
+  stroke-width: 2; stroke-dasharray: 7 5; rx: 10;
+  animation: growIn .5s ease both;
+}
+@keyframes growIn { from { opacity: 0; } to { opacity: 1; } }
+.region-label {
+  font-family: var(--font); font-weight: 650; fill: var(--region);
+}
+
+/* caption under/next to chart */
+.chart-caption {
+  position: absolute; left: 0; right: 0; bottom: -2px;
+  text-align: center; font-size: clamp(.78em, 1.6vmin, 1.5rem);
+  color: var(--ink-dim); pointer-events: none;
+}
+.chart-caption strong { color: var(--ink); }
+
+/* side panel beside a chart */
+.chart-side { display: grid; grid-template-columns: 1.25fr .75fr; gap: 3vw; align-items: center; height: 100%; }
+.chart-side .panel { max-width: 26em; }
+.chart-side .panel p { font-size: clamp(.84em, 1.6vmin, 1.15rem); }
+
+/* ---------- tokenizer demo ---------------------------------- */
+
+.tok-row { display: flex; gap: .35em; flex-wrap: wrap; margin: .8em 0 1.2em; }
+.tok {
+  font-family: var(--mono); font-size: clamp(.95em, 2.9vmin, 2.9rem);
+  padding: .25em .5em; border-radius: 8px; font-weight: 600;
+  background: rgba(96,165,250,.16); border: 1px solid rgba(96,165,250,.4);
+  color: #bfdbfe;
+}
+.tok:nth-child(2) { background: rgba(251,191,36,.16); border-color: rgba(251,191,36,.4); color: #fde68a; }
+.tok:nth-child(3) { background: rgba(74,222,128,.16); border-color: rgba(74,222,128,.4); color: #bbf7d0; }
+.tok-id { font-family: var(--mono); font-size: .75rem; color: var(--ink-faint); display: block; text-align: center; margin-top: .3em; }
+
+/* letters view */
+.letters { display: flex; gap: .22em; margin: .6em 0 1em; flex-wrap: wrap; }
+.letter {
+  font-family: var(--mono); font-size: clamp(.88em, 2.5vmin, 2.5rem);
+  width: 1.6em; height: 1.9em; display: grid; place-items: center;
+  border-radius: 6px; background: var(--bg-soft); border: 1px solid var(--rule);
+  color: var(--ink-dim);
+}
+.letter.hit { background: rgba(251,113,133,.2); border-color: var(--warm); color: #fecdd3; font-weight: 700; }
+
+/* ---------- vector arithmetic ------------------------------- */
+
+.vec-eq {
+  display: flex; align-items: center; gap: .5em; flex-wrap: wrap;
+  font-size: clamp(.95em, 2.7vmin, 2.8rem); font-weight: 650;
+  margin: .5em 0 1em;
+}
+.vec-word {
+  padding: .2em .55em; border-radius: 8px;
+  background: var(--bg-soft); border: 1px solid var(--rule);
+}
+.vec-op { color: var(--ink-faint); font-weight: 400; }
+.vec-result {
+  padding: .2em .55em; border-radius: 8px;
+  background: rgba(251,191,36,.18); border: 1px solid rgba(251,191,36,.45);
+  color: #fde68a;
+}
+
+/* ---------- headline screenshots ---------------------------- */
+
+.headline {
+  background: var(--bg-soft); border: 1px solid var(--rule);
+  border-left: 3px solid var(--warm);
+  border-radius: 10px; padding: .85em 1.1em; margin-bottom: .8em;
+}
+.headline .src {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-faint); font-weight: 600; margin-bottom: .3em;
+}
+.headline .hl {
+  font-size: clamp(.85em, 1.75vmin, 1.7rem); font-weight: 650;
+  color: var(--ink); line-height: 1.25;
+}
+.headline.good { border-left-color: var(--alive); }
+
+/* ---------- agent loop -------------------------------------- */
+
+.loop-stage {
+  display: flex; align-items: center; gap: 1em; flex-wrap: wrap;
+  margin: 1.2em 0;
+}
+.loop-node {
+  background: var(--bg-soft); border: 1px solid var(--rule);
+  border-radius: 12px; padding: .8em 1.1em; min-width: 8em;
+  text-align: center;
+}
+.loop-node .t { font-weight: 650; color: var(--ink); font-size: clamp(.8em, 1.55vmin, 1.1rem); }
+.loop-node .s { font-size: .8rem; color: var(--ink-faint); margin-top: .2em; }
+.loop-arrow { color: var(--ink-faint); font-size: 1.4rem; }
+
+/* ---------- progress + chrome ------------------------------- */
+
+#progress {
+  position: fixed; bottom: 0; left: 0; height: 2px;
+  background: var(--accent); transition: width .3s ease; z-index: 100;
+}
+#slide-num {
+  position: fixed; bottom: 14px; right: 18px;
+  font-size: .78rem; color: var(--ink-faint);
+  font-variant-numeric: tabular-nums; z-index: 100;
+  font-family: var(--mono);
+}
+#notes {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  max-height: 42vh; overflow-y: auto;
+  background: rgba(8,10,15,.97); border-top: 1px solid var(--rule);
+  padding: 1.1em 2em 1.5em; display: none; z-index: 90;
+  font-size: .95rem; line-height: 1.55; color: var(--ink-dim);
+}
+#notes.show { display: block; }
+#notes h4 {
+  margin: 0 0 .4em; font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .13em; color: var(--accent);
+}
+#notes p { font-size: .95rem; max-width: 60em; margin-bottom: .5em; }
+#notes strong { color: var(--ink); }
+
+#help {
+  position: fixed; inset: 0; background: rgba(8,10,15,.96);
+  display: none; place-items: center; z-index: 200;
+}
+#help.show { display: grid; }
+#help .inner { max-width: 30em; }
+#help kbd {
+  font-family: var(--mono); background: var(--bg-soft);
+  border: 1px solid var(--rule); border-radius: 5px;
+  padding: .12em .45em; font-size: .85em; color: var(--ink);
+}
+#help table { border-collapse: collapse; }
+#help td { padding: .4em .9em .4em 0; color: var(--ink-dim); font-size: .95rem; }
+
+/* ---------- print / PDF fallback ---------------------------- */
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  #progress, #slide-num, #notes, #help { display: none !important; }
+  .slide {
+    display: flex !important; opacity: 1 !important;
+    position: relative; page-break-after: always;
+    height: 100vh; width: 100vw;
+  }
+}
+
+/* ---------- reference markers -------------------------------- */
+
+/* Inline [n] citation markers. Kept small and dim so they never compete
+   with the sentence, but clickable to jump to the sources slide. */
+.ref {
+  font-size: clamp(11px, 1.25vmin, 15px); vertical-align: super; line-height: 0;
+  color: var(--accent); font-weight: 650; text-decoration: none;
+  margin-left: .12em; opacity: .85;
+}
+.ref:hover { opacity: 1; }
+
+/* The sources slide itself */
+.sources { font-size: clamp(.68em, 1.3vmin, .92em); }
+.sources ol { padding-left: 1.6em; margin: 0; columns: 2; column-gap: 3vw; }
+.sources li {
+  margin-bottom: .5em; color: var(--ink-faint);
+  font-size: inherit; line-height: 1.45; break-inside: avoid;
+  max-width: none;
+}
+.sources li b { color: var(--ink-dim); font-weight: 600; }
+
+/* ---------- logo row (hyperscalers) -------------------------- */
+
+.logo-row {
+  display: flex; flex-wrap: wrap; gap: clamp(.6em, 1.6vmin, 1.3em);
+  align-items: center; margin: 1em 0;
+}
+.logo-chip {
+  background: var(--bg-soft); border: 1px solid var(--rule);
+  border-radius: 10px; padding: .5em .9em;
+  font-weight: 650; color: var(--ink-dim);
+  font-size: clamp(.78em, 1.7vmin, 1.1em);
+  letter-spacing: -.01em;
+}
+.logo-chip .sub {
+  display: block; font-size: clamp(10.5px, 1.15vmin, 13px); font-weight: 500;
+  color: var(--ink-faint); letter-spacing: 0; margin-top: .15em;
+}
+.logo-chip.gpu { border-color: rgba(118,185,0,.45); color: #a3e635; }
+.logo-chip.cloud { border-color: rgba(96,165,250,.4); color: #93c5fd; }
+.logo-chip.lab { border-color: rgba(251,191,36,.4); color: #fcd34d; }
+
+/* ---------- tool call (function signature) ------------------- */
+
+.sig {
+  font-family: var(--mono); font-size: clamp(.72em, 1.5vmin, 1.05em);
+  background: #0a0c12; border: 1px solid var(--rule);
+  border-left: 3px solid var(--big);
+  border-radius: 8px; padding: .8em 1em; color: var(--ink-dim);
+  white-space: pre-wrap; line-height: 1.5; margin: .6em 0;
+}
+.sig .kw   { color: #c084fc; }
+.sig .fn   { color: #93c5fd; font-weight: 600; }
+.sig .arg  { color: #fcd34d; }
+.sig .cm   { color: var(--ink-faint); font-style: italic; }
+.sig .str  { color: #86efac; }
+
+/* ---------- seconda lettura degli assi ----------------------
+   Quando le etichette cambiano (stessi punti, assi diversi) le
+   coloro di viola, così si vede a colpo d'occhio che è una
+   lettura nuova e non gli assi di partenza. */
+.axis-label.x.second { fill: var(--region); }
+.axis-label.y.second { fill: var(--region); }
+
+/* Un oggetto evidenziato: i disambiguatori, quando voglio che
+   la classe guardi proprio quello. */
+.obj.highlight circle.ring {
+  stroke: var(--accent); stroke-width: 3.5;
+  filter: drop-shadow(0 0 10px rgba(251,191,36,.55));
+}
+.obj.highlight text.name { fill: var(--accent); }
+
+/* ---------- foto del relatore ------------------------------- */
+.me-photo {
+  width: clamp(120px, 26vmin, 300px); height: clamp(120px, 26vmin, 300px);
+  border-radius: 50%; object-fit: cover; display: block;
+  box-shadow: 0 20px 50px rgba(0,0,0,.6), 0 0 0 5px var(--bg), 0 0 0 7px var(--rule);
+}
+.me-photo.placeholder {
+  display: grid; place-items: center; text-align: center;
+  background: var(--bg-soft); border: 2px dashed var(--rule);
+  color: var(--ink-faint); font-size: clamp(.7rem, 1.4vmin, .95rem);
+  padding: 1em; line-height: 1.4;
+}
+
+/* ---------- appendice --------------------------------------- */
+.appendix-badge {
+  position: absolute; top: calc(var(--pad-y) * .6); right: var(--pad-x);
+  font-size: clamp(11px, 1.2vmin, 13px); text-transform: uppercase;
+  letter-spacing: .14em; color: var(--ink-faint); font-weight: 650;
+  border: 1px solid var(--rule); border-radius: 999px; padding: .3em .8em;
+}
+
+/* ---------- modalità modifica -------------------------------
+   Attiva col tasto `e`. Deve essere VISIBILISSIMA: l'unico
+   disastro possibile è presentare senza accorgersi di averla
+   lasciata accesa. */
+
+body.editing { --rule: #3b4358; }
+
+body.editing .slide.active [contenteditable] {
+  outline: 1px dashed rgba(167,139,250,.45);
+  outline-offset: 3px;
+  border-radius: 3px;
+  transition: outline-color .15s ease, background .15s ease;
+  cursor: text;
+}
+body.editing .slide.active [contenteditable]:hover {
+  outline-color: rgba(167,139,250,.9);
+  background: rgba(167,139,250,.06);
+}
+body.editing .slide.active [contenteditable]:focus {
+  outline: 2px solid var(--region);
+  background: rgba(167,139,250,.1);
+}
+
+/* Un testo già modificato resta segnato, anche fuori dalla
+   modalità: così ti accorgi di cosa non è ancora nel sorgente. */
+[data-edited="1"] {
+  box-shadow: inset 0 -2px 0 rgba(251,191,36,.5);
+}
+
+#edit-badge {
+  position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+  z-index: 300; border-radius: 999px;
+  padding: .45em 1.1em; font-size: clamp(11px, 1.3vmin, 14px);
+  font-family: var(--font); letter-spacing: .03em;
+  border: 1px solid var(--rule); background: rgba(10,12,18,.95);
+  color: var(--ink-dim); pointer-events: none;
+}
+#edit-badge.on {
+  border-color: var(--region); color: #ddd6fe;
+  background: rgba(76,29,149,.35);
+  box-shadow: 0 0 0 1px rgba(167,139,250,.3), 0 6px 24px rgba(0,0,0,.5);
+}
+#edit-badge.off { color: var(--accent); border-color: rgba(251,191,36,.4); }
+#edit-badge b { letter-spacing: .12em; }
+#edit-badge kbd {
+  font-family: var(--mono); background: rgba(255,255,255,.1);
+  border-radius: 4px; padding: .05em .35em;
+}
+
+/* In stampa la modalità modifica non esiste. */
+@media print {
+  #edit-badge { display: none !important; }
+  [data-edited="1"] { box-shadow: none; }
+}
+
+/* ---------- selettore di lingua ------------------------------ */
+#lang-switch {
+  position: fixed; top: 14px; right: 16px; z-index: 250;
+  display: flex; gap: 2px; padding: 3px;
+  background: rgba(10,12,18,.85); border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+#lang-switch button {
+  font-family: var(--font); font-size: clamp(11px, 1.2vmin, 13px);
+  font-weight: 650; letter-spacing: .06em;
+  color: var(--ink-faint); background: none; border: 0;
+  padding: .3em .75em; border-radius: 999px; cursor: pointer;
+  transition: color .15s ease, background .15s ease;
+}
+#lang-switch button:hover { color: var(--ink-dim); }
+#lang-switch button.on {
+  background: var(--accent); color: #1a1408;
+}
+@media print { #lang-switch { display: none !important; } }
